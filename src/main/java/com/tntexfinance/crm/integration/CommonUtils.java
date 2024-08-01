@@ -4,8 +4,16 @@ import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import org.json.JSONObject;
+
+import static java.util.stream.Collectors.joining;
 
 public class CommonUtils {
     public static Long NVL(Long l) {
@@ -53,5 +61,46 @@ public class CommonUtils {
     @SneakyThrows
     public static String encodeValue(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+    }
+
+    @SneakyThrows
+    public static String getEncodedStr(JSONObject jsonObject) {
+        System.out.println(jsonObject);
+
+        //Thực hiện việc sắp xếp lại
+        SortedMap<String, String> map = new TreeMap<>();
+        Class<?> classObject = jsonObject.getClass();
+        Field[] fields = classObject.getDeclaredFields();
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object fieldValue = field.get(jsonObject);
+            String type = field.getType().getSimpleName();
+            if (type.equals("Map")) {
+                HashMap<String, Object> hashedFieldValue = (HashMap<String, Object>) fieldValue;
+
+                //Lặp trên khóa và giá trị
+                for (Map.Entry<String, Object> entry : hashedFieldValue.entrySet()) {
+                    Object value = entry.getValue();
+                    String strValue = "";
+
+                    if (value != null) {
+                        if (value instanceof Float || value instanceof Double) {
+                            strValue = String.format("%.6f", Double.parseDouble(value.toString()));
+                        } else {
+                            strValue = value.toString();
+                        }
+                    }
+
+                    map.put(entry.getKey(), strValue);
+                }
+            }
+        }
+
+        String encodedURL = map.keySet().stream()
+                .map(key -> key + "=" + CommonUtils.encodeValue(map.get(key)))
+                .collect(joining("&", "", ""));
+
+        return encodedURL;
     }
 }

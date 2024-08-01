@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerExtraInfo {
-    private int attributeId;
+    private String attributeCode;
     private String attributeValue;
     private int customerId;
 }

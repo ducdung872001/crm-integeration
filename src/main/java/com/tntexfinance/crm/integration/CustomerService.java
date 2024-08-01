@@ -1,16 +1,13 @@
 package com.tntexfinance.crm.integration;
 
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import static java.util.stream.Collectors.joining;
 
 public class CustomerService {
     private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
@@ -20,8 +17,10 @@ public class CustomerService {
     private static final String CLIENT_ID = "cfeccbajec";
     private static final String CLIENT_KEY = "eaggcjkjeurpfanaklas";
 
+    private static final Gson gson = new Gson();
     public static void main(String[] args) {
         Customer customer = initCustomer();
+
 
         try {
             //Thực hiện đồng bộ sang TNTech CRM
@@ -63,27 +62,13 @@ public class CustomerService {
     }
 
     private static String generateHashedCode(Customer customer) {
-        SortedMap<String, String> map = new TreeMap<>();
-        map.put("name", CommonUtils.NVL(customer.getName()));
-        map.put("phone", CommonUtils.NVL(customer.getPhone()));
-        map.put("email", CommonUtils.NVL(customer.getEmail()));
-        map.put("gender", CommonUtils.NVL(customer.getGender()).toString());
-        map.put("birthday", customer.getBirthday() == null ? "" : customer.getBirthday());
-        map.put("code", CommonUtils.NVL(customer.getCode()));
-        map.put("address", CommonUtils.NVL(customer.getAddress()));
-        map.put("campaignCode", CommonUtils.NVL(customer.getCampaignCode()));
-        map.put("clientId", CLIENT_ID); //Được cấp từ ứng dụng
-        map.put("sourceName", CommonUtils.NVL(customer.getSourceName()));
-        map.put("actionWhenDuplicated", CommonUtils.NVL(customer.getActionWhenDuplicated()));
-
-        String encodedURL = map.keySet().stream()
-                .map(key -> key + "=" + CommonUtils.encodeValue(map.get(key)))
-                .collect(joining("&", "", ""));
-
-        System.out.println(encodedURL);
+        customer.setClientId(CLIENT_ID);
+        JSONObject jsonSource = new JSONObject(gson.toJson(customer));
+        String encodedUrl = CommonUtils.getEncodedStr(jsonSource);
+        System.out.println(encodedUrl);
 
         //Thực hiện băm tham số này rồi so sánh
-        return CommonUtils.hashMD5(encodedURL, CLIENT_KEY);
+        return CommonUtils.hashMD5(encodedUrl, CLIENT_KEY);
     }
 
     /**
@@ -91,39 +76,57 @@ public class CustomerService {
      */
     private static Customer initCustomer() {
         // Tạo dữ liệu mẫu cho CustomerExtraInfo
-        CustomerExtraInfo extraInfo1 = CustomerExtraInfo.builder()
-//                .attributeId(1)
-                .attributeValue("20/10/2023")
+        CustomerExtraInfo trangThaiOnboard = CustomerExtraInfo.builder()
+                .attributeCode("TrangThaiOnboard")
+                .attributeValue("Đã onboard thành công")
                 .build();
 
-        CustomerExtraInfo extraInfo2 = CustomerExtraInfo.builder()
-//                .attributeId(2)
-                .attributeValue("Thẻ tín dụng")
-//                .customerId(1001)
+        CustomerExtraInfo ngayOnboard = CustomerExtraInfo.builder()
+                .attributeCode("NgayOnboard")
+                .attributeValue("2/2/2024")
+                .build();
+
+        CustomerExtraInfo trangThaiKhoanVayCashLoan = CustomerExtraInfo.builder()
+                .attributeCode("TrangThaiKhoanVayCashLoan")
+                .attributeValue("Chờ thẩm định (APPRAISAL)")
+                .build();
+
+        CustomerExtraInfo trangThaiKhoanVayCreditLine = CustomerExtraInfo.builder()
+                .attributeCode("TrangThaiKhoanVayCreditLine")
+                .attributeValue("Chờ ký hợp đồng (FORSIGN)")
+                .build();
+
+        CustomerExtraInfo maDangKyVay = CustomerExtraInfo.builder()
+                .attributeCode("MaDangKyVay")
+                .attributeValue("123456")
+                .build();
+
+        CustomerExtraInfo sanPham = CustomerExtraInfo.builder()
+                .attributeCode("SanPham")
+                .attributeValue("Cash Loan")
+                .build();
+
+        CustomerExtraInfo ngayPheDuyet = CustomerExtraInfo.builder()
+                .attributeCode("NgayPheDuyet")
+                .attributeValue("20/02/2024")
+                .build();
+
+        CustomerExtraInfo soTienPheDuyet = CustomerExtraInfo.builder()
+                .attributeCode("SoTienPheDuyet")
+                .attributeValue("5000000")
                 .build();
 
         // Tạo dữ liệu mẫu cho Customer
         Customer customer = Customer.builder()
-                .name("John Doe")
+                .sourceName("Dagoras")
+                .code("0562b8fd-f43e-4634-a686-799b68")
                 .phone("0123456789")
-                .code("CUST1001")
-                .recommenderPhone("0987654321")
-                .email("john.doe@example.com")
-                .address("123 Main St, Anytown, USA")
-                .birthday("1980-01-01")
-                .gender(1)
-                .sourceName("Website")
-                .careerName("Engineer")
-                .groupName("VIP")
-                .avatar("http://example.com/avatars/johndoe.png")
-                .firstCall("2024-01-01 10:00:00")
-                .weight(75)
-                .height(180)
-                .timestamp(System.currentTimeMillis())
+                .name("Phạm Tấn Trường")
+
                 .clientId(CLIENT_ID)
-                .campaignCode("CMP1001")
                 .actionWhenDuplicated("override")
-                .customerExtraInfos(Arrays.asList(extraInfo1, extraInfo2))
+                .customerExtraInfos(Arrays.asList(trangThaiOnboard, ngayOnboard, trangThaiKhoanVayCashLoan,
+                        trangThaiKhoanVayCreditLine, maDangKyVay, sanPham, ngayPheDuyet, soTienPheDuyet))
                 .build();
 
         return customer;

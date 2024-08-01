@@ -1,5 +1,6 @@
 com\tntexfinance\crm\integration\CustomerService.class
 com\tntexfinance\crm\integration\Customer$CustomerBuilder.class
 com\tntexfinance\crm\integration\CustomerExtraInfo$CustomerExtraInfoBuilder.class
+com\tntexfinance\crm\integration\CommonUtils.class
 com\tntexfinance\crm\integration\Customer.class
 com\tntexfinance\crm\integration\CustomerExtraInfo.class

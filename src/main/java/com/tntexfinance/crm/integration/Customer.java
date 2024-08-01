@@ -13,26 +13,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Customer {
     private int id;
-    private String name;
-    private String phone;
-    private String code;
-    private String recommenderPhone;
-    private String email;
-    private String address;
-    private String birthday;
-    private Integer gender; //1 - Nữ, 2 - Nam, 0 - Chưa xác định
-    private String sourceName;
-    private String careerName;
-    private String groupName;
-    private String avatar;
-    private String firstCall;
-    private Integer weight;
-    private Integer height;
-    private Long timestamp;
+
+    //1. Trường thông tin tĩnh
+    private String sourceName; //Nguồn/kênh
+    private String code; //Customer id (Mã khách hàng)
+    private String phone; //Số ĐT khách hàng
+    private String name; //Tên khách hàng
+
+    //2. Trường thông tin động
+    private List<CustomerExtraInfo> customerExtraInfos;
+
+    //3. Trường thông tin để xác thực và chỉ dẫn hành động
     private String clientId;
-    private String campaignCode;
     private String hashedCode;
     private String actionWhenDuplicated; //override, merge, ignore, manual (Tự có cơ chế resolve bằng thủ công)
-    private List<CustomerExtraInfo> customerExtraInfos;
 }
 
