@@ -12,6 +12,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static java.util.Arrays.asList;
+
 public class CustomerService {
     private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
 //    private static final String API_URL = "http://localhost:9100/adminapi/customer/update/partner";
@@ -106,7 +108,7 @@ public class CustomerService {
 
         CustomerExtraInfo ngayOnboard = CustomerExtraInfo.builder()
                 .fieldName("NgayOnboard")
-                .attributeValue("2/2/2024")
+                .attributeValue("2024-02-02")
                 .build();
 
         CustomerExtraInfo trangThaiKhoanVayCashLoan = CustomerExtraInfo.builder()
@@ -126,12 +128,12 @@ public class CustomerService {
 
         CustomerExtraInfo sanPham = CustomerExtraInfo.builder()
                 .fieldName("SanPham")
-                .attributeValue("Cash Loan")
+                .attributeValue(gson.toJson(asList("Cash loan", "Credit line"))) //Các tùy chọn lấy tại "Định nghĩa trường thông tin bổ sung"
                 .build();
 
         CustomerExtraInfo ngayPheDuyet = CustomerExtraInfo.builder()
                 .fieldName("NgayPheDuyet")
-                .attributeValue("20/02/2024")
+                .attributeValue("2024-02-05")
                 .build();
 
         CustomerExtraInfo soTienPheDuyet = CustomerExtraInfo.builder()
@@ -147,7 +149,7 @@ public class CustomerService {
                 .name("Phạm Tấn Trường")
                 .clientId(CLIENT_ID)
                 .actionWhenDuplicated("override")
-                .customerExtraInfos(Arrays.asList(trangThaiOnboard, ngayOnboard, trangThaiKhoanVayCashLoan,
+                .customerExtraInfos(asList(trangThaiOnboard, ngayOnboard, trangThaiKhoanVayCashLoan,
                         trangThaiKhoanVayCreditLine, maDangKyVay, sanPham, ngayPheDuyet, soTienPheDuyet))
                 .build();
 
