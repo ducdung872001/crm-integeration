@@ -19,12 +19,12 @@ public class CustomerService {
     //Cặp khóa và giá trị này đã được tạo ra trong phần Cài đặt >> Cài đặt ứng dụng
     //Môi trường của TNEX
     //CLIENT_ID: cfeccbajec, CLIENT_KEY: eaggcjkjeurpfanaklas
-    //private static final String CLIENT_ID = "cfeccbajec";
-    //private static final String CLIENT_KEY = "eaggcjkjeurpfanaklas";
+    private static final String CLIENT_ID = "cfeccbajec";
+    private static final String CLIENT_KEY = "eaggcjkjeurpfanaklas";
 
     //Môi trường của greenspa => (Để test)
-    private static final String CLIENT_ID = "ggfbijecca";
-    private static final String CLIENT_KEY = "pqgjdiudikarcdfaucgq";
+//    private static final String CLIENT_ID = "ggfbijecca";
+//    private static final String CLIENT_KEY = "pqgjdiudikarcdfaucgq";
 
     private static final Gson gson = new Gson();
     public static void main(String[] args) {
