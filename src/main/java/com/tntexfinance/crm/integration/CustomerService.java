@@ -1,7 +1,10 @@
 package com.tntexfinance.crm.integration;
 
 import com.google.gson.Gson;
+import com.tntexfinance.crm.integration.reborn.RBCustomer;
 import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -21,7 +24,6 @@ public class CustomerService {
     public static void main(String[] args) {
         Customer customer = initCustomer();
 
-
         try {
             //Thực hiện đồng bộ sang TNTech CRM
             syncCustomer(customer);
@@ -31,9 +33,20 @@ public class CustomerService {
     }
 
     public static void syncCustomer(Customer customer) throws Exception {
-        String hashedCode = generateHashedCode(customer);
-        System.out.println("hashedCode =>" + hashedCode);
+        ModelMapper modelMapper = new ModelMapper();
 
+        // Cấu hình mapping trong trường hợp tên 2 trường khác nhau (X: source, Y: target)
+//        modelMapper.addMappings(new PropertyMap<Customer, RBCustomer>() {
+//            @Override
+//            protected void configure() {
+//                map().setName(source.getName());
+//                map().setPhone(source.getPhone());
+//            }
+//        });
+        RBCustomer rbCustomer = modelMapper.map(customer, RBCustomer.class);
+
+        String hashedCode = generateHashedCode(rbCustomer);
+        System.out.println("hashedCode =>" + hashedCode);
         customer.setHashedCode(hashedCode);
 
         Gson gson = new Gson();
@@ -61,7 +74,7 @@ public class CustomerService {
         }
     }
 
-    private static String generateHashedCode(Customer customer) {
+    private static String generateHashedCode(RBCustomer customer) {
         customer.setClientId(CLIENT_ID);
         JSONObject jsonSource = new JSONObject(gson.toJson(customer));
         String encodedUrl = CommonUtils.getEncodedStr(jsonSource);
