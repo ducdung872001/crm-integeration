@@ -13,8 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class CustomerService {
-//    private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
-    private static final String API_URL = "http://localhost:9100/adminapi/customer/update/partner";
+    private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
+//    private static final String API_URL = "http://localhost:9100/adminapi/customer/update/partner";
 
     //Cặp khóa và giá trị này đã được tạo ra trong phần Cài đặt >> Cài đặt ứng dụng
     //Môi trường của TNEX
