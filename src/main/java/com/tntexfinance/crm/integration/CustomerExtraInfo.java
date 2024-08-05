@@ -1,16 +1,17 @@
 package com.tntexfinance.crm.integration;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CustomerExtraInfo {
-    private String attributeCode;
+    private Integer id;
+    private Integer attributeId;
+    private Integer customerId;
     private String attributeValue;
-    private int customerId;
+    private String datatype;
+    private String fieldName;
 }

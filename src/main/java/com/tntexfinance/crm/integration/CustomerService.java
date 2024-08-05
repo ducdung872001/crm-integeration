@@ -77,42 +77,42 @@ public class CustomerService {
     private static Customer initCustomer() {
         // Tạo dữ liệu mẫu cho CustomerExtraInfo
         CustomerExtraInfo trangThaiOnboard = CustomerExtraInfo.builder()
-                .attributeCode("TrangThaiOnboard")
+                .fieldName("TrangThaiOnboard")
                 .attributeValue("Đã onboard thành công")
                 .build();
 
         CustomerExtraInfo ngayOnboard = CustomerExtraInfo.builder()
-                .attributeCode("NgayOnboard")
+                .fieldName("NgayOnboard")
                 .attributeValue("2/2/2024")
                 .build();
 
         CustomerExtraInfo trangThaiKhoanVayCashLoan = CustomerExtraInfo.builder()
-                .attributeCode("TrangThaiKhoanVayCashLoan")
+                .fieldName("TrangThaiKhoanVayCashLoan")
                 .attributeValue("Chờ thẩm định (APPRAISAL)")
                 .build();
 
         CustomerExtraInfo trangThaiKhoanVayCreditLine = CustomerExtraInfo.builder()
-                .attributeCode("TrangThaiKhoanVayCreditLine")
+                .fieldName("TrangThaiKhoanVayCreditLine")
                 .attributeValue("Chờ ký hợp đồng (FORSIGN)")
                 .build();
 
         CustomerExtraInfo maDangKyVay = CustomerExtraInfo.builder()
-                .attributeCode("MaDangKyVay")
+                .fieldName("MaDangKyVay")
                 .attributeValue("123456")
                 .build();
 
         CustomerExtraInfo sanPham = CustomerExtraInfo.builder()
-                .attributeCode("SanPham")
+                .fieldName("SanPham")
                 .attributeValue("Cash Loan")
                 .build();
 
         CustomerExtraInfo ngayPheDuyet = CustomerExtraInfo.builder()
-                .attributeCode("NgayPheDuyet")
+                .fieldName("NgayPheDuyet")
                 .attributeValue("20/02/2024")
                 .build();
 
         CustomerExtraInfo soTienPheDuyet = CustomerExtraInfo.builder()
-                .attributeCode("SoTienPheDuyet")
+                .fieldName("SoTienPheDuyet")
                 .attributeValue("5000000")
                 .build();
 
