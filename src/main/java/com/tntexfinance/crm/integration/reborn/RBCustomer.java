@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
-public class RBCustomer {
+public class RBCustomer extends ExcelRow {
     private Integer id;
 
     //Tên khách hàng(*)

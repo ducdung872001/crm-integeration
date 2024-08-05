@@ -13,12 +13,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class CustomerService {
-    private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
+//    private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
+    private static final String API_URL = "http://localhost:9100/adminapi/customer/update/partner";
 
     //Cặp khóa và giá trị này đã được tạo ra trong phần Cài đặt >> Cài đặt ứng dụng
+    //Môi trường của TNEX
     //CLIENT_ID: cfeccbajec, CLIENT_KEY: eaggcjkjeurpfanaklas
-    private static final String CLIENT_ID = "cfeccbajec";
-    private static final String CLIENT_KEY = "eaggcjkjeurpfanaklas";
+    //private static final String CLIENT_ID = "cfeccbajec";
+    //private static final String CLIENT_KEY = "eaggcjkjeurpfanaklas";
+
+    //Môi trường của greenspa => (Để test)
+    private static final String CLIENT_ID = "ggfbijecca";
+    private static final String CLIENT_KEY = "pqgjdiudikarcdfaucgq";
 
     private static final Gson gson = new Gson();
     public static void main(String[] args) {
@@ -39,18 +45,19 @@ public class CustomerService {
 //        modelMapper.addMappings(new PropertyMap<Customer, RBCustomer>() {
 //            @Override
 //            protected void configure() {
-//                map().setName(source.getName());
-//                map().setPhone(source.getPhone());
+//                map().setExtraInfos(source.getCustomerExtraInfos());
 //            }
 //        });
+
         RBCustomer rbCustomer = modelMapper.map(customer, RBCustomer.class);
+        rbCustomer.setExtraInfo(gson.toJson(customer.getCustomerExtraInfos()));
 
         String hashedCode = generateHashedCode(rbCustomer);
         System.out.println("hashedCode =>" + hashedCode);
-        customer.setHashedCode(hashedCode);
+        rbCustomer.setHashedCode(hashedCode);
 
         Gson gson = new Gson();
-        String jsonInputString = gson.toJson(customer);
+        String jsonInputString = gson.toJson(rbCustomer);
 
         URL url = new URL(API_URL);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -58,6 +65,9 @@ public class CustomerService {
         con.setRequestProperty("Content-Type", "application/json; utf-8");
         con.setRequestProperty("Accept", "application/json");
         con.setDoOutput(true);
+
+        String curl = buildCurlCommand(con, jsonInputString);
+        System.out.println(curl);
 
         try (OutputStream os = con.getOutputStream()) {
             byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
@@ -135,7 +145,6 @@ public class CustomerService {
                 .code("0562b8fd-f43e-4634-a686-799b68")
                 .phone("0123456789")
                 .name("Phạm Tấn Trường")
-
                 .clientId(CLIENT_ID)
                 .actionWhenDuplicated("override")
                 .customerExtraInfos(Arrays.asList(trangThaiOnboard, ngayOnboard, trangThaiKhoanVayCashLoan,
@@ -143,5 +152,25 @@ public class CustomerService {
                 .build();
 
         return customer;
+    }
+
+    private static String buildCurlCommand(HttpURLConnection httpClient, String jsonInputString) {
+        StringBuilder curlCmd = new StringBuilder("curl -X ");
+        curlCmd.append(httpClient.getRequestMethod()).append(" ");
+
+        // Thêm tiêu đề
+        for (String header : httpClient.getRequestProperties().keySet()) {
+            for (String value : httpClient.getRequestProperties().get(header)) {
+                curlCmd.append("-H \"").append(header).append(": ").append(value).append("\" ");
+            }
+        }
+
+        // Thêm dữ liệu JSON
+        curlCmd.append("-d '").append(jsonInputString).append("' ");
+
+        // Thêm URL
+        curlCmd.append(httpClient.getURL());
+
+        return curlCmd.toString();
     }
 }

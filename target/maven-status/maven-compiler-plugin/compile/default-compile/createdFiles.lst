@@ -3,6 +3,7 @@ com\tntexfinance\crm\integration\CustomerExtraInfo$CustomerExtraInfoBuilder.clas
 com\tntexfinance\crm\integration\CommonUtils.class
 com\tntexfinance\crm\integration\CustomerExtraInfo.class
 com\tntexfinance\crm\integration\Customer$CustomerBuilder.class
+com\tntexfinance\crm\integration\reborn\ExcelRow.class
 com\tntexfinance\crm\integration\reborn\RBCustomer.class
 com\tntexfinance\crm\integration\Customer.class
 com\tntexfinance\crm\integration\reborn\RBCustomer$1.class
