@@ -102,23 +102,23 @@ public class CustomerService {
     private static Customer initCustomer() {
         // Tạo dữ liệu mẫu cho CustomerExtraInfo
         CustomerExtraInfo trangThaiOnboard = CustomerExtraInfo.builder()
-                .fieldName("TrangThaiOnboard")
-                .attributeValue("Đã onboard thành công")
+                .fieldName("TrangthaiOnboard")
+                .attributeValue("Đã Onboard thành công")
                 .build();
 
         CustomerExtraInfo ngayOnboard = CustomerExtraInfo.builder()
-                .fieldName("NgayOnboard")
+                .fieldName("Ngayonboard")
                 .attributeValue("2024-02-02")
                 .build();
 
         CustomerExtraInfo trangThaiKhoanVayCashLoan = CustomerExtraInfo.builder()
-                .fieldName("TrangThaiKhoanVayCashLoan")
-                .attributeValue("Chờ thẩm định (APPRAISAL)")
+                .fieldName("Trangthaikhoanvaycashloan")
+                .attributeValue("Chờ thẩm định phê duyệt (APPRISAL/APPROVAL)")
                 .build();
 
         CustomerExtraInfo trangThaiKhoanVayCreditLine = CustomerExtraInfo.builder()
-                .fieldName("TrangThaiKhoanVayCreditLine")
-                .attributeValue("Chờ ký hợp đồng (FORSIGN)")
+                .fieldName("Trangthaikhoanvaycreditline")
+                .attributeValue("Đã khởi tạo đơn vay (Signed)")
                 .build();
 
         CustomerExtraInfo maDangKyVay = CustomerExtraInfo.builder()
@@ -132,12 +132,12 @@ public class CustomerService {
                 .build();
 
         CustomerExtraInfo ngayPheDuyet = CustomerExtraInfo.builder()
-                .fieldName("NgayPheDuyet")
+                .fieldName("ngaypheduyet")
                 .attributeValue("2024-02-05")
                 .build();
 
         CustomerExtraInfo soTienPheDuyet = CustomerExtraInfo.builder()
-                .fieldName("SoTienPheDuyet")
+                .fieldName("sotienpheduyet")
                 .attributeValue("5000000")
                 .build();
 

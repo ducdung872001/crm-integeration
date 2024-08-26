@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -131,6 +132,8 @@ public class RBCustomer extends ExcelRow {
     private String emailEncrypted;
 
     private RBCustomer duplicateData;
+    private Timestamp lastUpdated;
+    private Integer doMigrate = 1; //1:  true , 0: false;
 
     public String getEmail() {
         if (email == null) return null;
