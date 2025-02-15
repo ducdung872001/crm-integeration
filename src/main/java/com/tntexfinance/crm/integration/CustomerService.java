@@ -1,16 +1,16 @@
 package com.tntexfinance.crm.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.tntexfinance.crm.integration.reborn.RBCustomer;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+
 
 import static java.util.Arrays.asList;
 
@@ -29,6 +29,7 @@ public class CustomerService {
 //    private static final String CLIENT_KEY = "pqgjdiudikarcdfaucgq";
 
     private static final Gson gson = new Gson();
+
     public static void main(String[] args) {
         Customer customer = initCustomer();
 
@@ -142,16 +143,33 @@ public class CustomerService {
                 .build();
 
         // Tạo dữ liệu mẫu cho Customer
-        Customer customer = Customer.builder()
-                .sourceName("Dagoras")
-                .code("0562b8fd-f43e-4634-a686-799b68")
-                .phone("0123456789")
-                .name("Phạm Tấn Trường")
-                .clientId(CLIENT_ID)
-                .actionWhenDuplicated("override")
-                .customerExtraInfos(asList(trangThaiOnboard, ngayOnboard, trangThaiKhoanVayCashLoan,
-                        trangThaiKhoanVayCreditLine, maDangKyVay, sanPham, ngayPheDuyet, soTienPheDuyet))
-                .build();
+//        Customer customer = Customer.builder()
+//                .sourceName("Dagoras")
+//                .code("0562b8fd-f43e-4634-a686-799b68")
+//                .phone("0123456789")
+//                .name("Phạm Tấn Trường")
+//                .clientId(CLIENT_ID)
+//                .actionWhenDuplicated("override")
+//                .customerExtraInfos(asList(trangThaiOnboard, ngayOnboard, trangThaiKhoanVayCashLoan,
+//                        trangThaiKhoanVayCreditLine, maDangKyVay, sanPham, ngayPheDuyet, soTienPheDuyet))
+//                .build();
+
+        Customer customer = new Customer();
+
+        //Chuyển đổi chuỗi sang khách hàng
+        String strCustomer = "{\"id\":0,\"name\":\"Nguyễn Phan Trọng Trung\",\"phone\":\"0389784236\",\"extraInfo\":\"[{\\\"attributeValue\\\":\\\"[\\\\\\\"Cash loan\\\\\\\"]\\\",\\\"fieldName\\\":\\\"SanPham\\\"},{\\\"attributeValue\\\":\\\"Chưa tạo tài khoản\\\",\\\"fieldName\\\":\\\"TrangthaiOnboard\\\"}]\",\"extraInfos\":[{\"attributeValue\":\"[\\\"Cash loan\\\"]\",\"fieldName\":\"SanPham\"},{\"attributeValue\":\"Chưa tạo tài khoản\",\"fieldName\":\"TrangthaiOnboard\"}],\"doMigrate\":1,\"clientId\":\"cfeccbajec\",\"sourceName\":\"dagoras\",\"actionWhenDuplicated\":\"ignore\",\"hashedCode\":\"0b5dc8ab43cc9f36fa2a867353d656dc\",\"keyValue\":{}}";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            // Chuyển đổi JSON thành đối tượng Customer
+            customer = objectMapper.readValue(strCustomer, Customer.class);
+
+            // In thông tin ra console
+            System.out.println("Customer Name: " + customer.getName());
+            System.out.println("Customer Phone: " + customer.getPhone());
+            System.out.println("Extra Infos: " + customer.getCustomerExtraInfos());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return customer;
     }
