@@ -30,7 +30,8 @@ public class ReCallMissedCustomer {
   //    private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
   private static final String API_URL = "http://localhost:9100/adminapi/customer/update/partner";
   private static final Logger logger = LoggerFactory.getLogger(ReCallMissedCustomer.class);
-  private static String FILE_PATH = "/home/hoangdd/Downloads/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
+  //  private static String FILE_PATH = "/home/hoangdd/Downloads/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
+  private static String FILE_PATH = "/code/tnex/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
   private static final int PAGE_SIZE = 1;
   private static final String PASSWORD = "171284";
   private final AtomicInteger currentPage = new AtomicInteger(0);
