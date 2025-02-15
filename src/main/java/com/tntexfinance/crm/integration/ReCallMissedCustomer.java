@@ -43,7 +43,9 @@ public class ReCallMissedCustomer {
   public static void main(String[] args) {
     try {
       ReCallMissedCustomer processor = new ReCallMissedCustomer();
-      processor.processCustomerExcelBatch();
+      while (!processor.processingComplete) {
+        processor.processCustomerExcelBatch();
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
