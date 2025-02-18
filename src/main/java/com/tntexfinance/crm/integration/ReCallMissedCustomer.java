@@ -1,7 +1,9 @@
 package com.tntexfinance.crm.integration;
 
 import com.google.gson.Gson;
+import com.tntexfinance.crm.integration.reborn.CurlMessage;
 import com.tntexfinance.crm.integration.reborn.RBCustomer;
+import com.tntexfinance.crm.integration.service.KafkaProducerService;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,8 +32,8 @@ public class ReCallMissedCustomer {
   //    private static final String API_URL = "https://cloud.reborn.vn/adminapi/customer/update/partner";
   private static final String API_URL = "http://localhost:9100/adminapi/customer/update/partner";
   private static final Logger logger = LoggerFactory.getLogger(ReCallMissedCustomer.class);
-  //  private static String FILE_PATH = "/home/hoangdd/Downloads/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
-  private static String FILE_PATH = "/code/tnex/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
+  private static String FILE_PATH = "/home/hoangdd/Downloads/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
+  //  private static String FILE_PATH = "/code/tnex/Field dữ liệu trên CRM TNEX (tháng 1 thiếu).xlsx";
   private static final int PAGE_SIZE = 1;
   private static final String PASSWORD = "171284";
   private final AtomicInteger currentPage = new AtomicInteger(0);
@@ -39,6 +41,13 @@ public class ReCallMissedCustomer {
   private static final String CLIENT_ID = "cfeccbajec";
   private static final String CLIENT_KEY = "eaggcjkjeurpfanaklas";
   private static final Gson gson = new Gson();
+  private final KafkaProducerService kafkaProducerService;
+  private static final String BOOTSTRAP_SERVERS = "localhost:9092";
+
+  public ReCallMissedCustomer() {
+    this.kafkaProducerService = new KafkaProducerService(BOOTSTRAP_SERVERS);
+    ;
+  }
 
   public static void main(String[] args) {
     try {
@@ -292,6 +301,14 @@ public class ReCallMissedCustomer {
 
     String curl = buildCurlCommand(con, jsonInputString);
     System.out.println(curl);
+    CurlMessage curlMessage = new CurlMessage();
+    curlMessage.setUrl(API_URL);
+    curlMessage.setMethod("POST");
+    curlMessage.setJsonPayload(jsonInputString);
+    curlMessage.setCurlCommand(curl);
+
+    // Send to Kafka
+    kafkaProducerService.sendCurlCommand(curlMessage);
 
     try (OutputStream os = con.getOutputStream()) {
       byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
